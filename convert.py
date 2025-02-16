@@ -102,6 +102,12 @@ def convert_model_to_int32(model_path: str, out_path: str):
     log.info("Creating new int32 model...")
     model_int32 = h.make_model(graph_int32, producer_name="onnx-typecast")
     model_int32.opset_import[0].version = opset_version
+
+    # Uncomment the next lines to make the script work
+    # model_int32.opset_import.append(
+    #     h.make_opsetid("pkg.onnxscript.torch_lib", opset_version)
+    # )
+
     ch.check_model(model_int32)
     log.info(f"Saving converted model as: {out_path}")
     onnx.save_model(model_int32, out_path)
